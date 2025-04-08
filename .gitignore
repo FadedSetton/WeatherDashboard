@@ -1,0 +1,21 @@
+# Node
+node_modules/
+npm-debug.log
+.env
+
+# macOS system files
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Optional if you use these
+dist/
+coverage/
+
+# VS Code
+.vscode/
+
+# IDEs
+.idea/
