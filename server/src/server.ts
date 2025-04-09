@@ -5,29 +5,37 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-
-// Import the routes
-import routes from './routes/index.js';
-
-const app = express();
-
-const PORT = process.env.PORT || 3001;
-
-// TODO: Serve static files of entire client dist folder
+// Get __dirname from ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// TODO: Implement middleware for parsing JSON and urlencoded form data
-app.use(express.static(path.join(__dirname, '../client/dist')));
+
+const app = express();
+const PORT = process.env.PORT || 3001;
+
+import apiRoutes from './routes/api/index.js';
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// TODO: Implement middleware to connect the routes
-app.use('/api', routes);
 
-app.get('*', (_req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-})
+const clientDistPath = path.resolve(__dirname, '../../client/dist');
+app.use(express.static(clientDistPath));
 
-// Start the server on the port
-app.listen(PORT, () => console.log(`Listening on PORT: ${PORT}`));
+
+app.use('/api', apiRoutes);
+
+
+app.get('*', (req, res) => {
+  if (req.accepts('html')) {
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  } else {
+    res.status(404).end();
+  }
+});
+
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});

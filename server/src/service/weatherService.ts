@@ -32,7 +32,7 @@ class WeatherService {
   private baseURL = 'https://api.openweathermap.org/data/2.5/forecast';
   private geoURL = 'http://api.openweathermap.org/geo/1.0/direct';
   private apiKey = process.env.OPENWEATHER_API_KEY;
-  private cityName = '';
+  //private cityName = '';
 
   private async fetchLocationData(query: string) {
     const url = `${this.geoURL}?q=${query}&limit=1&appid=${this.apiKey}`;
@@ -82,7 +82,7 @@ class WeatherService {
   }
 
   async getWeatherForCity(city: string) {
-    this.cityName = city;
+    //this.cityName = city;
 
     const locationData = await this.fetchLocationData(city);
     const coords = this.destructureLocationData(locationData);
